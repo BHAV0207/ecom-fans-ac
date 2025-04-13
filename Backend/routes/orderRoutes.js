@@ -1,41 +1,49 @@
-const express = require('express');
-
+const express = require("express");
 const router = express.Router();
-const Orders = require('../models/Order');
-
-router.post('/' , async (req, res) => {
-  try{
-    const order = new Order({
-      user: req.user.id,
-      products: req.body.products,
-      status: 'Pending'
-    });
-    await order.save();
-    res.status(201).json({ status: 'success', data: order });
-  }
-  catch(err){
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
-})
+const { protect, authorize } = require("../middleware/authMiddleware");
+const {
+  createOrder,
+  getOrdersById,
+  getAllOrders,
+  getOrdersOfUser,
+  assignRider,
+  updateOrderStatusByRider,
+} = require("../controllers/order");
 
 
-router.patch('/:id' , async(req , res) => {
-  try{
-    const order = await Orders.findById(req.params.id);
-    if(!order){
-      return res.status(404).json({msg: 'No order found'});
-    }
-    order.status = req.body.status;
-    await order.save();
-    res.json({status : 'success', data: order});
-  }
-  catch(err){
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  } 
-}
-)
+// @route   POST /api/orders
+// @desc    Create a new order
+// @access  Private (Admin only)
+router.post("/", protect, authorize("admin"), createOrder);
 
+
+// @route   GET /api/orders
+// @desc    Get all orders
+// @access  Private (Admin only)
+router.get("/", protect, authorize("admin"), getAllOrders);
+
+
+// @route   GET /api/orders/:id
+// @desc    Get an order by its ID
+// @access  Public (can restrict later if needed)
+router.get("/:id", getOrdersById);
+
+
+// @route   GET /api/orders/user/:id
+// @desc    Get all orders of a specific user
+// @access  Private (User must be logged in)
+router.get("/user/:id", protect, getOrdersOfUser);
+
+
+// @route   PUT /api/orders/assign-rider
+// @desc    Assign a rider to an order and update status to 'Shipped'
+// @access  Private (Admin only)
+router.put("/assign-rider", protect, authorize("admin"), assignRider);
+
+
+// @route   PATCH /api/orders/update-status
+// @desc    Rider updates the status of an assigned order
+// @access  Private (Rider only)
+router.patch("/update-status", protect, authorize("rider"), updateOrderStatusByRider);
 
 module.exports = router;
