@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { protect, authorize } = require("../middleware/authMiddleware");
+const { protect, authorize } = require("../middleware/auth");
 const {
   createOrder,
   getOrdersById,
@@ -13,8 +13,8 @@ const {
 
 // @route   POST /api/orders
 // @desc    Create a new order
-// @access  Private (Admin only)
-router.post("/", protect, authorize("admin"), createOrder);
+// @access  Private (User only)
+router.post("/", protect, authorize("user"), createOrder);
 
 
 // @route   GET /api/orders

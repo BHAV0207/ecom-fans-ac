@@ -1,6 +1,6 @@
-const Products = require("../models/Product");
+const Products = require("../models/product");
 
-exports.createProduct = async (req, res) => {
+const createProduct = async (req, res) => {
   const { name, description, price, colors, sizes, inventory } = req.body;
 
   try {
@@ -21,7 +21,7 @@ exports.createProduct = async (req, res) => {
   }
 };
 
-exports.getAll = async (req, res) => {
+const getAll = async (req, res) => {
   try {
     const products = await Products.find();
 
@@ -35,7 +35,7 @@ exports.getAll = async (req, res) => {
   }
 };
 
-exports.getById = async (req, res) => {
+const getById = async (req, res) => {
   try {
     const products = await Products.findById(req.params.id);
     if (!products) {
@@ -48,7 +48,7 @@ exports.getById = async (req, res) => {
   }
 };
 
-exports.updateProduct = async (req, res) => {
+const updateProduct = async (req, res) => {
   try {
     const product = await Products.findById(req.params.id);
     if (!product) {
