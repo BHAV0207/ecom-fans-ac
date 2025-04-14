@@ -9,6 +9,11 @@ import CreateProduct from "./components/CreateProduct";
 import Orders from "./components/Orders";
 import Riders from "./components/Riders";
 import CreateRIder from "./components/CreateRIder";
+import Profile from "./components/Profile";
+import Cart from "./UserComponents/Cart";
+import ProductsUser from "./UserComponents/ProductsUser";
+import OrdersUser from "./UserComponents/OrdersUser";
+import ProductDetails from "./UserComponents/ProductDetails";
 
 function App() {
   return (
@@ -25,11 +30,19 @@ function App() {
             <Route path="orders" element={<Orders />} />
             <Route path="rider" element={<Riders />} />
             <Route path="rider-create" element={<CreateRIder />} />
+            <Route path="profile" element={<Profile></Profile>} />
           </Route>
         </Route>
 
         <Route element={<ProtectedRoute allowedRoles={["user"]} />}>
-          <Route path="/user/*" element={<UserPage />} />
+          <Route path="/user/*" element={<UserPage />} >
+
+            <Route index element={<Navigate to="Products" replace />}></Route>
+            <Route path="Products" element={<ProductsUser />} />
+            <Route path="cart" element={<Cart />} />
+            <Route path="orders" element={<OrdersUser/>} />
+            <Route path="product/:id" element={<ProductDetails/>} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>
