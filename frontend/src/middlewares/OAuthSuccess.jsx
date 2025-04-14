@@ -7,13 +7,14 @@ const OAuthSuccess = () => {
 
   useEffect(() => {
     const token = searchParams.get("token");
+    const id = searchParams.get("id");
     const role = searchParams.get("role");
     const name = searchParams.get("name");
     const email = searchParams.get("email");
 
     if (token && role) {
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify({ name, email, role }));
+      localStorage.setItem("user", JSON.stringify({ name, email, role  , id }));
       
       setTimeout(() => {
         if (role === "admin") {

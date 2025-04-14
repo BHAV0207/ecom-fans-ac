@@ -48,6 +48,7 @@ router.get(
 
     const queryParams = new URLSearchParams({
       token,
+      id: req.user._id,
       role: req.user.role,
       name: req.user.name,
       email: req.user.email,
