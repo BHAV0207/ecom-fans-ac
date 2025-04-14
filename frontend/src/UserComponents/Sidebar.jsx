@@ -68,12 +68,6 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
 
         <NavSection title="SETTINGS" isOpen={isOpen}>
           <NavItem
-            icon={<Users size={20} />}
-            text="Profile"
-            route="/admin/profile"
-            isOpen={isOpen}
-          />
-          <NavItem
             icon={<LogOut size={20} />}
             text="Logout"
             route="/"

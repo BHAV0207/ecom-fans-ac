@@ -1,4 +1,3 @@
-// config/passport.js
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("../models/user");
@@ -16,8 +15,23 @@ passport.use(
         const email = profile.emails[0].value;
         const approved = await ApprovedEmail.findOne({ email });
 
-        if (!approved) return done(null, false);
+        // Check if the email is approved
+        if (!approved) {
+          // If the email is not approved, create the user with a default role
+          let user = await User.findOne({ email });
+          if (!user) {
+            user = await User.create({
+              googleId: profile.id,
+              name: profile.displayName,
+              email,
+              photo: profile.photos[0].value,
+              role: "user", // Assign 'user' role by default for unapproved emails
+            });
+          }
+          return done(null, user);
+        }
 
+        // If the email is approved, proceed as before
         let user = await User.findOne({ email });
         if (!user) {
           user = await User.create({
@@ -25,7 +39,7 @@ passport.use(
             name: profile.displayName,
             email,
             photo: profile.photos[0].value,
-            role: approved.role,
+            role: approved.role, // Use the approved role
           });
         }
 
@@ -43,6 +57,4 @@ passport.deserializeUser(async (id, done) => {
   done(null, user);
 });
 
-
 module.exports = passport;
-
