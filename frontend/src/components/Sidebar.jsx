@@ -69,6 +69,12 @@ const Sidebar = ({ isOpen, toggleSidebar, isMobile }) => {
             route="/admin/rider"
             isOpen={isOpen}
           />
+            <NavItem
+            icon={<Briefcase size={20} />}
+            text="Create Rider"
+            route="/admin/rider-create"
+            isOpen={isOpen}
+          />
         </NavSection>
 
         <NavSection title="SETTINGS" isOpen={isOpen}>

@@ -16,4 +16,29 @@ const getAllRiders = async (req, res) => {
   }
 }
 
-module.exports = {getAllRiders}
+const createRider = async (req, res) => {
+  try{
+    const { name, email, phone } = req.body;
+
+    if(!name || !email || !phone) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const newRider = new User({
+      name,
+      email,
+      phone,
+      role: 'rider'
+    });
+
+    await newRider.save();
+
+    res.status(201).json({ status: "success", data: newRider });
+  }
+  catch(err){
+    console.error("Error creating rider:", err.message);
+    res.status(500).json({ message: "Error creating rider", error: err });
+  }
+}
+
+module.exports = {getAllRiders , createRider};

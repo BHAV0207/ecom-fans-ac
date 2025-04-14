@@ -11,6 +11,7 @@ export const LogicProvider = ({ children }) => {
 
   const [allOrders , setAllOrders] = useState([]);
   const [allRiders , setAllRiders] = useState([]);
+  const [rider , setRider] = useState(null);
 
   const createProduct = async (productData) => {
     try {
@@ -162,7 +163,36 @@ export const LogicProvider = ({ children }) => {
     }
   };
   
-
+  const createRider = async (riderData) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found");
+      }
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      const response = await axios.post(
+        "http://localhost:5000/api/admin/rider-create",
+        riderData,
+        config
+      );
+  
+      // Refresh riders after creation
+      setRider(response.data.data);
+      console.log("Rider created successfully:", response.data.data);
+      await getAllRiders();
+  
+      return response.data;
+    } catch (error) {
+      console.error("Create Rider Error:", error);
+      setProductError(error.response?.data?.message || "Something went wrong while creating rider");
+    }
+  }
 
 
 
@@ -179,7 +209,9 @@ export const LogicProvider = ({ children }) => {
         allOrders,
         assignRiderToOrder,
         getAllRiders,
-        allRiders
+        allRiders,
+        createRider,
+        rider
       }}
     >
       {children}

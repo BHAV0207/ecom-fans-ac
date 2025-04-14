@@ -8,6 +8,7 @@ import Products from "./components/Products";
 import CreateProduct from "./components/CreateProduct";
 import Orders from "./components/Orders";
 import Riders from "./components/Riders";
+import CreateRIder from "./components/CreateRIder";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="create-product" element={<CreateProduct />} />
             <Route path="orders" element={<Orders />} />
             <Route path="rider" element={<Riders />} />
+            <Route path="rider-create" element={<CreateRIder />} />
           </Route>
         </Route>
 
