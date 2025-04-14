@@ -35,7 +35,7 @@ export const LogicProvider = ({ children }) => {
       };
 
       const response = await axios.post(
-        "http://localhost:5000/api/products",
+        "https://ecom-fans-ac.onrender.com/api/products",
         productData,
         config
       );
@@ -62,7 +62,7 @@ export const LogicProvider = ({ children }) => {
 
 
       const response = await axios.get(
-        "http://localhost:5000/api/products",
+        "https://ecom-fans-ac.onrender.com/api/products",
       );
       setAllProducts(response.data.data);
       return response.data;
@@ -94,7 +94,7 @@ export const LogicProvider = ({ children }) => {
       };
       console.log("Fetching all orders...");
       const response = await axios.get(
-        "http://localhost:5000/api/orders",
+        "https://ecom-fans-ac.onrender.com/api/orders",
         config
       );
       console.log("Order Fetched successfully:", response.data);
@@ -122,7 +122,7 @@ export const LogicProvider = ({ children }) => {
       };
   
       const response = await axios.get(
-        "http://localhost:5000/api/admin/riders",
+        "https://ecom-fans-ac.onrender.com/api/admin/riders",
         config
       );  
       console.log("Riders Fetched successfully:", response.data);
@@ -148,7 +148,7 @@ export const LogicProvider = ({ children }) => {
       };
   
       const response = await axios.put(
-        "http://localhost:5000/api/orders/assign-rider",
+        "https://ecom-fans-ac.onrender.com/api/orders/assign-rider",
         { orderId, riderId },
         config
       );
@@ -177,7 +177,7 @@ export const LogicProvider = ({ children }) => {
       };
   
       const response = await axios.post(
-        "http://localhost:5000/api/admin/rider-create",
+        "https://ecom-fans-ac.onrender.com/api/admin/rider-create",
         riderData,
         config
       );

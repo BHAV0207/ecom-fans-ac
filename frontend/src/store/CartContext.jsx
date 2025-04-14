@@ -66,7 +66,7 @@ export const CartProvider = ({ children }) => {
 
     try{
       const res = await axios.post(
-        "http://localhost:5000/api/orders",
+        "https://ecom-fans-ac.onrender.com/api/orders",
         { products: formattedProducts, address },
         {
           headers: {
@@ -88,7 +88,7 @@ export const CartProvider = ({ children }) => {
   const getAllOrdersOfUser = async (id) => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/orders/user/:id",
+        "https://ecom-fans-ac.onrender.com/api/orders/user/:id",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,

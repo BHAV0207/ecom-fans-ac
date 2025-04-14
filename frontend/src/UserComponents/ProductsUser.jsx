@@ -8,62 +8,70 @@ function ProductsUser() {
 
   useEffect(() => {
     getProducts();
-  }, []);
-
-  if (productLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-lg text-gray-500">Loading products...</p>
-      </div>
-    );
-  }
-
-  if (productError) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <p className="text-lg text-red-500">{productError}</p>
-      </div>
-    );
-  }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Assuming getProducts is stable or memoized
 
   return (
-    <div className="p-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {allProducts.map((product) => (
-        <Link
-        to={`/user/product/${product._id}`}
-        key={product._id}
-        className="block hover:shadow-lg transition-shadow"
-      >
-      
-          <div className="bg-white shadow-md rounded-lg p-6 hover:border-blue-400 border-2 border-transparent">
-            <h2 className="text-xl font-semibold text-blue-800 mb-2">
-              {product.name}
-            </h2>
-            <p className="text-gray-600 mb-2">{product.description}</p>
-            <p className="text-lg text-green-700 font-bold mb-2">
-              ₹{product.price}
-            </p>
+    <div className="bg-white">
+      <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+        <h2 className="text-3xl font-extrabold tracking-tight text-center text-gray-900 mb-12">
+          Our Products
+        </h2>
 
-            {product.colors?.length > 0 && (
-              <p className="text-sm text-gray-500 mb-1">
-                <span className="font-medium">Colors:</span>{" "}
-                {product.colors.join(", ")}
-              </p>
-            )}
+        {productLoading && (
+          <div className="flex justify-center items-center min-h-[40vh]">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-indigo-500"></div>
+            <p className="ml-4 text-gray-600">Loading products...</p>
+          </div>
+        )}
 
-            {product.sizes?.length > 0 && (
-              <p className="text-sm text-gray-500 mb-2">
-                <span className="font-medium">Sizes:</span>{" "}
-                {product.sizes.join(", ")}
-              </p>
-            )}
-
-            <p className="text-sm text-gray-500 mb-4">
-              In Stock: {product.inventory}
+        {productError && (
+          <div className="text-center">
+            <p className="text-red-600 bg-red-100 p-4 rounded-md">
+              {productError}
             </p>
           </div>
-        </Link>
-      ))}
+        )}
+
+        {!productLoading && !productError && allProducts.length === 0 && (
+          <div className="text-center">
+            <p className="text-gray-500">No products found.</p>
+          </div>
+        )}
+
+        {!productLoading && !productError && allProducts.length > 0 && (
+          <div className="grid grid-cols-1 gap-y-10 sm:grid-cols-2 gap-x-6 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+            {allProducts.map((product) => (
+              <Link
+                key={product._id || product.id}
+                to={`/products/${product._id || product.id}`}
+                className="group block"
+              >
+                <div className="w-full aspect-w-1 aspect-h-1 bg-gray-100 rounded-lg overflow-hidden xl:aspect-w-7 xl:aspect-h-8">
+                  <img
+                    src={product.imageUrl || "https://via.placeholder.com/300"} // Use placeholder
+                    alt={product.name}
+                    className="w-full h-full object-center object-cover group-hover:opacity-75 transition-opacity duration-300"
+                  />
+                </div>
+                <div className="mt-4 flex justify-between">
+                  <div>
+                    <h3 className="text-sm text-gray-700 font-medium group-hover:text-indigo-600">
+                      {product.name}
+                    </h3>
+                    {/* Optional: Display primary color or category */}
+                    {/* <p className="mt-1 text-sm text-gray-500">{product.colors ? product.colors[0] : ''}</p> */}
+                  </div>
+                  <p className="text-lg font-semibold text-gray-900">
+                    ₹{product.price}
+                  </p>
+                </div>
+                {/* Optional: Quick add/view details on hover (more complex) */}
+              </Link>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

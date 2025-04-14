@@ -67,7 +67,9 @@ function CreateProduct() {
           </div>
 
           <div>
-            <label className="block text-blue-900 font-medium">Description</label>
+            <label className="block text-blue-900 font-medium">
+              Description
+            </label>
             <textarea
               name="description"
               value={formData.description}
@@ -79,7 +81,9 @@ function CreateProduct() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-blue-900 font-medium">Price (₹)</label>
+              <label className="block text-blue-900 font-medium">
+                Price (₹)
+              </label>
               <input
                 type="number"
                 name="price"
@@ -91,7 +95,9 @@ function CreateProduct() {
             </div>
 
             <div>
-              <label className="block text-blue-900 font-medium">Inventory</label>
+              <label className="block text-blue-900 font-medium">
+                Inventory
+              </label>
               <input
                 type="number"
                 name="inventory"
@@ -104,7 +110,9 @@ function CreateProduct() {
           </div>
 
           <div>
-            <label className="block text-blue-900 font-medium">Colors (comma separated)</label>
+            <label className="block text-blue-900 font-medium">
+              Colors (comma separated)
+            </label>
             <input
               type="text"
               name="colors"
@@ -115,7 +123,9 @@ function CreateProduct() {
           </div>
 
           <div>
-            <label className="block text-blue-900 font-medium">Sizes (comma separated)</label>
+            <label className="block text-blue-900 font-medium">
+              Sizes (comma separated)
+            </label>
             <input
               type="text"
               name="sizes"
