@@ -10,6 +10,7 @@ export const LogicProvider = ({ children }) => {
   const [allProducts, setAllProducts] = useState([]);
 
   const [allOrders , setAllOrders] = useState([]);
+  const [allRiders , setAllRiders] = useState([]);
 
   const createProduct = async (productData) => {
     try {
@@ -81,11 +82,7 @@ export const LogicProvider = ({ children }) => {
       if (!token) {
         throw new Error("No token found");
       }
-      // Check if productData is valid
-      if (!productData || typeof productData !== "object") {
-        throw new Error("Invalid product data");
-      }
-
+   
       setProductLoading(true);
       setProductError(null);
 
@@ -94,11 +91,13 @@ export const LogicProvider = ({ children }) => {
           Authorization: `Bearer ${token}`,
         },
       };
+      console.log("Fetching all orders...");
       const response = await axios.get(
         "http://localhost:5000/api/orders",
         config
       );
-      setAllOrders(response.data.data);
+      console.log("Order Fetched successfully:", response.data);
+      setAllOrders(response.data);
       return response.data;
     } catch (error) {
       console.error("Fetch Products Error:", error);
@@ -107,6 +106,64 @@ export const LogicProvider = ({ children }) => {
       setProductLoading(false);
     }
   }
+
+  const getAllRiders = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found");
+      }
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      const response = await axios.get(
+        "http://localhost:5000/api/admin/riders",
+        config
+      );  
+      console.log("Riders Fetched successfully:", response.data);
+      setAllRiders(response.data.data);
+      return response.data.data; 
+    } catch (error) {
+      console.error("Fetch Riders Error:", error);
+      setProductError(error.response?.data?.message || "Something went wrong");
+    }
+  }
+
+  const assignRiderToOrder = async (orderId, riderId) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        throw new Error("No token found");
+      }
+  
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+  
+      const response = await axios.put(
+        "http://localhost:5000/api/orders/assign-rider",
+        { orderId, riderId },
+        config
+      );
+  
+      // Refresh orders after assignment
+      await getAllOrders();
+  
+      return response.data;
+    } catch (error) {
+      console.error("Assign Rider Error:", error);
+      setProductError(error.response?.data?.message || "Something went wrong while assigning rider");
+    }
+  };
+  
+
+
 
 
   return (
@@ -120,6 +177,9 @@ export const LogicProvider = ({ children }) => {
         getProducts,
         getAllOrders, 
         allOrders,
+        assignRiderToOrder,
+        getAllRiders,
+        allRiders
       }}
     >
       {children}
